@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"name": "IMU BLE",
+			"path": "IMU BLE"
+		},
+		{
+			"name": "IMU UART RAW",
+			"path": "IMU UART RAW"
+		},
+		{
+			"name": "IMU DMP",
+			"path": "IMU DMP"
+		}
+	],
+	"settings": {}
+}
