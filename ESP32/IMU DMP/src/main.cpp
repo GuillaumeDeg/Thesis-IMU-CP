@@ -36,7 +36,7 @@
 ICM_20948_I2C myICM;  // Otherwise create an ICM_20948_I2C object
 
 void setup() {
-    SERIAL_PORT.begin(115200);  // Start the serial console
+    SERIAL_PORT.begin(256000);  // Start the serial console
     SERIAL_PORT.println(F("ICM-20948 Example"));
 
     delay(100);
@@ -98,10 +98,10 @@ void setup() {
     // DMP is capable of outputting multiple sensor data at different rates to FIFO.
     // Setting value can be calculated as follows:
     // Value = (DMP running rate / ODR ) - 1
-    // E.g. For a 5Hz ODR rate when DMP is running at 55Hz, value = (55/5) - 1 = 10.
-    success &= (myICM.setDMPODRrate(DMP_ODR_Reg_Accel, 0) == ICM_20948_Stat_Ok);  // Set to 55Hz
-    success &= (myICM.setDMPODRrate(DMP_ODR_Reg_Gyro, 0) == ICM_20948_Stat_Ok);         // Set to 55Hz
-    success &= (myICM.setDMPODRrate(DMP_ODR_Reg_Cpass_Calibr, 0) == ICM_20948_Stat_Ok);  // Set to 55Hz
+    // E.g. For a 5Hz ODR rate when DMP is running at 225Hz, value = (225/(2+1)) - 1 = 10.
+    success &= (myICM.setDMPODRrate(DMP_ODR_Reg_Accel, 1) == ICM_20948_Stat_Ok);  // Set to 224Hz
+    success &= (myICM.setDMPODRrate(DMP_ODR_Reg_Gyro, 1) == ICM_20948_Stat_Ok);         // Set to 224Hz
+    success &= (myICM.setDMPODRrate(DMP_ODR_Reg_Cpass_Calibr, 1) == ICM_20948_Stat_Ok);  // Set to 224Hz
 
     // Enable the FIFO
     success &= (myICM.enableFIFO() == ICM_20948_Stat_Ok);
@@ -187,29 +187,29 @@ void loop() {
     // get calibrations, 0 = uncalibrated, 3 = fully calibrated
     if ((data.header2 & DMP_header2_bitmap_Accel_Accuracy) > 0)  // Check for Compass calibrated
     {
-        uint16_t aq = (uint16_t)data.Accel_Accuracy;
+        uint16_t aa = (uint16_t)data.Accel_Accuracy;
         SERIAL_PORT.println("---------------------------------");
-        SERIAL_PORT.printf("Acceleration Accuracy:%d\n", aq);
+        SERIAL_PORT.printf("Acceleration Accuracy:%d\n", aa);
         SERIAL_PORT.println("---------------------------------");
     }
     if ((data.header2 & DMP_header2_bitmap_Gyro_Accuracy) > 0)  // Check for Compass calibrated
     {
-        uint16_t aq = (uint16_t)data.Gyro_Accuracy;
+        uint16_t ag = (uint16_t)data.Gyro_Accuracy;
         SERIAL_PORT.println("---------------------------------");
-        SERIAL_PORT.printf("Gyroscope Accuracy:%d\n", aq);
+        SERIAL_PORT.printf("Gyroscope Accuracy:%d\n", ag);
         SERIAL_PORT.println("---------------------------------");
     }
     if ((data.header2 & DMP_header2_bitmap_Compass_Accuracy) > 0)  // Check for Compass calibrated
     {
-        uint16_t aq = (uint16_t)data.Compass_Accuracy;
+        uint16_t ac = (uint16_t)data.Compass_Accuracy;
         SERIAL_PORT.println("---------------------------------");
-        SERIAL_PORT.printf("Magnetometer Accuracy:%d\n", aq);
+        SERIAL_PORT.printf("Magnetometer Accuracy:%d\n", ac);
         SERIAL_PORT.println("---------------------------------");
     }
 
     if(arrived == 0b111){
         arrived = 0;
-        SERIAL_PORT.printf("%d %f %f %f %f %f %f %f %f %f\n", k++, x_acc, y_acc, z_acc, x_gyr, y_gyr, z_gyr, x_mag, y_mag, z_mag);
+        SERIAL_PORT.printf("%f \t%f \t%f \t%f \t%f \t%f \t%f \t%f \t%f\n", k++, x_acc, y_acc, z_acc, x_gyr, y_gyr, z_gyr, x_mag, y_mag, z_mag);
     }
 }
 
@@ -333,10 +333,10 @@ ICM_20948_Status_e ICM_20948::initializeDMP(void)
   ICM_20948_smplrt_t mySmplrt;
   //mySmplrt.g = 19; // ODR is computed as follows: 1.1 kHz/(1+GYRO_SMPLRT_DIV[7:0]). 19 = 55Hz. InvenSense Nucleo example uses 19 (0x13).
   //mySmplrt.a = 19; // ODR is computed as follows: 1.125 kHz/(1+ACCEL_SMPLRT_DIV[11:0]). 19 = 56.25Hz. InvenSense Nucleo example uses 19 (0x13).
-//   mySmplrt.g = 4; // 225Hz
-//   mySmplrt.a = 4; // 225Hz
-  mySmplrt.g = 8; // 112Hz
-  mySmplrt.a = 8; // 112Hz
+  mySmplrt.g = 4; // 225Hz
+  mySmplrt.a = 4; // 225Hz
+//   mySmplrt.g = 8; // 112Hz
+//   mySmplrt.a = 8; // 112Hz
   result = setSampleRate((ICM_20948_Internal_Acc | ICM_20948_Internal_Gyr), mySmplrt); if (result > worstResult) worstResult = result;
 
   // Setup DMP start address through PRGM_STRT_ADDRH/PRGM_STRT_ADDRL
@@ -419,20 +419,20 @@ ICM_20948_Status_e ICM_20948::initializeDMP(void)
 
   // Configure the Accel Only Gain: 15252014 (225Hz) 30504029 (112Hz) 61117001 (56Hz)
   //const unsigned char accelOnlyGain[4] = {0x03, 0xA4, 0x92, 0x49}; // 56Hz
-//   const unsigned char accelOnlyGain[4] = {0x00, 0xE8, 0xBA, 0x2E}; // 225Hz
-  const unsigned char accelOnlyGain[4] = {0x01, 0xD1, 0x74, 0x5D}; // 112Hz
+  const unsigned char accelOnlyGain[4] = {0x00, 0xE8, 0xBA, 0x2E}; // 225Hz
+//   const unsigned char accelOnlyGain[4] = {0x01, 0xD1, 0x74, 0x5D}; // 112Hz
   result = writeDMPmems(ACCEL_ONLY_GAIN, 4, &accelOnlyGain[0]); if (result > worstResult) worstResult = result;
 
   // Configure the Accel Alpha Var: 1026019965 (225Hz) 977872018 (112Hz) 882002213 (56Hz)
   //const unsigned char accelAlphaVar[4] = {0x34, 0x92, 0x49, 0x25}; // 56Hz
-//   const unsigned char accelAlphaVar[4] = {0x3D, 0x27, 0xD2, 0x7D}; // 225Hz
-  const unsigned char accelAlphaVar[4] = {0x3A, 0x49, 0x24, 0x92}; // 112Hz
+  const unsigned char accelAlphaVar[4] = {0x3D, 0x27, 0xD2, 0x7D}; // 225Hz
+//   const unsigned char accelAlphaVar[4] = {0x3A, 0x49, 0x24, 0x92}; // 112Hz
   result = writeDMPmems(ACCEL_ALPHA_VAR, 4, &accelAlphaVar[0]); if (result > worstResult) worstResult = result;
 
   // Configure the Accel A Var: 47721859 (225Hz) 95869806 (112Hz) 191739611 (56Hz)
   //const unsigned char accelAVar[4] = {0x0B, 0x6D, 0xB6, 0xDB}; // 56Hz
-//   const unsigned char accelAVar[4] = {0x02, 0xD8, 0x2D, 0x83}; // 225Hz
-  const unsigned char accelAVar[4] = {0x05, 0xB6, 0xDB, 0x6E}; // 112Hz
+  const unsigned char accelAVar[4] = {0x02, 0xD8, 0x2D, 0x83}; // 225Hz
+//   const unsigned char accelAVar[4] = {0x05, 0xB6, 0xDB, 0x6E}; // 112Hz
   result = writeDMPmems(ACCEL_A_VAR, 4, &accelAVar[0]); if (result > worstResult) worstResult = result;
 
   // Configure the Accel Cal Rate
