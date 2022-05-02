@@ -209,7 +209,7 @@ void loop() {
 
     if(arrived == 0b111){
         arrived = 0;
-        SERIAL_PORT.printf("%f \t%f \t%f \t%f \t%f \t%f \t%f \t%f \t%f\n", k++, x_acc, y_acc, z_acc, x_gyr, y_gyr, z_gyr, x_mag, y_mag, z_mag);
+        SERIAL_PORT.printf("%f \t%f \t%f \t%f \t%f \t%f \t%f \t%f \t%f\n", x_acc, y_acc, z_acc, x_gyr, y_gyr, z_gyr, x_mag, y_mag, z_mag);
     }
 }
 
