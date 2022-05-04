@@ -6,31 +6,29 @@
 <NumElts>2</NumElts>
 <Cluster>
 <Name>Hardware Configuration</Name>
-<NumElts>2</NumElts>
+<NumElts>1</NumElts>
 <Refnum>
 <Name>VISA resource</Name>
 <RefKind>VISA</RefKind>
 <Val>COM5</Val>
 </Refnum>
-<EW>
-<Name>Signal Type &lt;Replace Me&gt;</Name>
-<Choice>Sine Wave</Choice>
-<Choice>Square with Noise</Choice>
-<Val>0</Val>
-</EW>
 </Cluster>
 <Cluster>
 <Name>Logging Configuration</Name>
-<NumElts>2</NumElts>
+<NumElts>3</NumElts>
 <Path>
 <Name>Log File Base Path</Name>
-<Val>C:\Users\gigi3\OneDrive - KU Leuven\Thesis\Labview\Thesis\IMU\Logs\Logged data.tdms</Val>
+<Val>C:\Users\gigi3\Documents\LabVIEW Data\Logged Data.tdms</Val>
 </Path>
 <Refnum>
 <Name>TDMS File Reference</Name>
 <RefKind>TDMS File</RefKind>
 <Val>0x00000000</Val>
 </Refnum>
+<Boolean>
+<Name>Log Select</Name>
+<Val>1</Val>
+</Boolean>
 </Cluster>
 </Cluster>
 </LVData>
