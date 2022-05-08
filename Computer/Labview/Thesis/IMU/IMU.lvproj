@@ -51,6 +51,8 @@
 		<Item Name="IMU Display.lvlib" Type="Library" URL="../Display/IMU Display.lvlib"/>
 		<Item Name="IMU Main.vi" Type="VI" URL="../IMU Main.vi"/>
 		<Item Name="temp.vi" Type="VI" URL="../Display/temp.vi"/>
+		<Item Name="Allan Variance for range.vi" Type="VI" URL="../Processing/Allan Variance for range.vi"/>
+		<Item Name="Allan Variance for range new.vi" Type="VI" URL="../Processing/Allan Variance for range new.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Write to XML File(array).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/xml.llb/Write to XML File(array).vi"/>
@@ -147,6 +149,7 @@
 			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
 			<Item Name="Vertex.vi" Type="VI" URL="../../../Vertex.vi"/>
 			<Item Name="IMU model SUBVI.vi" Type="VI" URL="../../../IMU model SUBVI.vi"/>
+			<Item Name="Calc_Allan-Variance.VI" Type="VI" URL="../Processing/Calc_Allan-Variance.VI"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build">
 			<Item Name="Continuous Measurement and Logging Application" Type="EXE">

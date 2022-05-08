@@ -1,0 +1,10 @@
+﻿  allanVariance.cpp
+C:\Users\gigi3\Documents\Thesis\IMU-ICM-20948\Computer\libs\Thesis\ErrorModellingLibrary\allanVariance.cpp(5,1): warning C4273: 'allanVarianceChartO': inconsistent dll linkage
+C:\Users\gigi3\Documents\Thesis\IMU-ICM-20948\Computer\libs\Thesis\ErrorModellingLibrary\allanVariance.h(14,39): message : see previous definition of 'allanVarianceChartO'
+C:\Users\gigi3\Documents\Thesis\IMU-ICM-20948\Computer\libs\Thesis\ErrorModellingLibrary\allanVariance.cpp(10,1): warning C4273: 'allanVarianceChartNO': inconsistent dll linkage
+C:\Users\gigi3\Documents\Thesis\IMU-ICM-20948\Computer\libs\Thesis\ErrorModellingLibrary\allanVariance.h(15,39): message : see previous definition of 'allanVarianceChartNO'
+C:\Users\gigi3\Documents\Thesis\IMU-ICM-20948\Computer\libs\Thesis\ErrorModellingLibrary\allanVariance.cpp(17,1): warning C4297: 'allanVarianceChartNO': function assumed not to throw an exception but does
+C:\Users\gigi3\Documents\Thesis\IMU-ICM-20948\Computer\libs\Thesis\ErrorModellingLibrary\allanVariance.cpp(17,1): message : __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+C:\Users\gigi3\Documents\Thesis\IMU-ICM-20948\Computer\libs\Thesis\ErrorModellingLibrary\allanVariance.cpp(22,1): warning C4297: 'allanVarianceChartNO': function assumed not to throw an exception but does
+C:\Users\gigi3\Documents\Thesis\IMU-ICM-20948\Computer\libs\Thesis\ErrorModellingLibrary\allanVariance.cpp(22,1): message : __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  ErrorModellingLibrary.vcxproj -> C:\Users\gigi3\Documents\Thesis\IMU-ICM-20948\Computer\libs\Thesis\Debug\ErrorModellingLibrary.dll

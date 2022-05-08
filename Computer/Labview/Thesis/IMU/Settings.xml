@@ -27,7 +27,7 @@
 </Refnum>
 <Boolean>
 <Name>Log Select</Name>
-<Val>1</Val>
+<Val>0</Val>
 </Boolean>
 </Cluster>
 </Cluster>
