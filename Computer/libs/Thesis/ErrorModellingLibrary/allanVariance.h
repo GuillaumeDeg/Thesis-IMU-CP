@@ -10,6 +10,13 @@
 //Calculates the Overlapping Allan Variance for an array
 //inputdata: ptr to array of floats as input
 //N: size of the input array
-//outputdata: ptr to array of floats as output with length N-1
-extern "C" ERRORMODELLIBRARY_API void allanVarianceChartO(float* inputdata, float* outputdata, int N);
-extern "C" ERRORMODELLIBRARY_API void allanVarianceChartNO(float* inputdata, float* outputdata, int N);
+//nArray: array of all values of n to be calculated
+//outputdata: ptr to array of floats as output with length nLength
+extern "C" ERRORMODELLIBRARY_API void allanVarianceChartO(float* inputdata, float* outputdata, int N, int* nArray, int nLength);
+
+//Calculates the Non-Overlapping Allan Variance for an array
+//inputdata: ptr to array of floats as input
+//N: size of the input array
+//nArray: array of all values of n to be calculated
+//outputdata: ptr to array of floats as output with length nLength
+extern "C" ERRORMODELLIBRARY_API void allanVarianceChartNO(float* inputdata, float* outputdata, int N, int* nArray, int nLength);

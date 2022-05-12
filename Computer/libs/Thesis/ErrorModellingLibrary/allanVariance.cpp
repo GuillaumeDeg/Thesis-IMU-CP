@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "allanVariance.h"
 
-void allanVarianceChartO(float* inputdata, float* outputdata, int N)
-{
+void allanVarianceChartO(float* inputdata, float* outputdata, int N, int* nArray, int nLength){
 	float* A, * B;
 	float temp;
 	double acc;
@@ -17,7 +16,8 @@ void allanVarianceChartO(float* inputdata, float* outputdata, int N)
 		throw ExceptionNestedException;
 		return;
 	}
-	for (n = 1; n <= N / 2; n++) {				/* n=N/2 means minimum of 2 subgroups */
+	for (int i = 0; i < nLength && nArray[i] <= N / 2; i++) {				/* k=N/2 means minimum of 2 subgroups */
+		n = nArray[i];
 		m = N - n + 1;                          /* number of subgroups */
 		for (s = 0; s < m; s++) {               /* average subgroups */
 			acc = 0.0;
@@ -31,20 +31,20 @@ void allanVarianceChartO(float* inputdata, float* outputdata, int N)
 			temp = (A[s + n] - A[s]);
 			acc += (double)temp * (double)temp;
 		}
-		B[n - 1] = (float)acc / (2 * m);
+		B[i] = (float)acc / (2 * m);
 	}
-	for (n = 0; n < N / 2; n++)
-		outputdata[n] = B[n];
+	for (int i = 0; i < nLength && nArray[i] <= N / 2; i++)
+		outputdata[i] = B[i];
 	delete[] A;
 	delete[] B;
 }
 
-void allanVarianceChartNO(float* inputdata, float* outputdata, int N)
+void allanVarianceChartNO(float* inputdata, float* outputdata, int N, int* nArray, int nLength)
 {
 	float* A, * B;
 	float temp;
 	double acc;
-	int k, m, s, l;
+	int n, m, s, l;					/* space for N floats */
 	A = new float[N * 4];						/* space for N floats */
 	if (A == NULL) {
 		throw ExceptionNestedException;
@@ -55,25 +55,26 @@ void allanVarianceChartNO(float* inputdata, float* outputdata, int N)
 		throw ExceptionNestedException;
 		return;
 	}
-	for (k = 1; k <= N / 2; k++) {				/* k=N/2 means minimum of 2 subgroups */
-		m = N / k;                              /* number of subgroups */
+	for (int i = 0; i < nLength && nArray[i] <= N/2; i++) {				/* k=N/2 means minimum of 2 subgroups */
+		n = nArray[i];
+		m = N / n;                              /* number of subgroups */
 		for (s = 0; s < m; s++) {               /* average subgroups */
 			acc = 0.0;
-			for (l = s * k; l < s * k + k; l++) {
+			for (l = s * n; l < s * n + n; l++) {
 				acc += inputdata[l]; 
 			} 
-			A[s] = (float)acc / k;
+			A[s] = (float)acc / n;
 		}
 		acc = 0; 
 		m--;
 		for (s = 0; s < m; s++) {				/* short term variance, use adjacent groups */
 			temp = (A[s + 1] - A[s]); 
-			acc += (double)temp* (double)temp;
+			acc += (double)temp * (double)temp;
 		}
-		B[k - 1] = (float)acc / (2 * m);
+		B[i] = (float)acc / (2 * m);
 	}
-	for (k = 0; k < N / 2; k++) 
-		outputdata[k] = B[k];
+	for (int i = 0; i < nLength && nArray[i] <= N / 2; i++)
+		outputdata[i] = B[i];
 	delete [] A;
 	delete [] B;
 }
