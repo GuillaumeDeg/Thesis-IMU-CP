@@ -9,4 +9,5 @@
 	<Item Name="ErrorModellingLibrary.lvlib" Type="Library" URL="../ErrorModellingLibrary/ErrorModellingLibrary.lvlib"/>
 	<Item Name="Process state.ctl" Type="VI" URL="../Process state.ctl"/>
 	<Item Name="Processing Message Loop.vi" Type="VI" URL="../Processing Message Loop.vi"/>
+	<Item Name="QuaternionLibrary.lvlib" Type="Library" URL="../QuaternionLibrary/QuaternionLibrary.lvlib"/>
 </Library>

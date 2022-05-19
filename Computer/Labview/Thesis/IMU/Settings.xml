@@ -1,24 +1,28 @@
 <?xml version='1.0' standalone='yes' ?>
 <LVData xmlns="http://www.ni.com/LVData">
-<Version>21.0</Version>
+<Version>21.0.1f1</Version>
 <Cluster>
 <Name>Settings in</Name>
 <NumElts>2</NumElts>
 <Cluster>
 <Name>Hardware Configuration</Name>
-<NumElts>1</NumElts>
+<NumElts>2</NumElts>
 <Refnum>
-<Name>VISA resource</Name>
+<Name>Port</Name>
 <RefKind>VISA</RefKind>
-<Val>COM3</Val>
+<Val>COM5</Val>
 </Refnum>
+<U16>
+<Name>Baudrate</Name>
+<Val>11</Val>
+</U16>
 </Cluster>
 <Cluster>
 <Name>Logging Configuration</Name>
 <NumElts>3</NumElts>
 <Path>
 <Name>Log File Base Path</Name>
-<Val>C:\Users\gigi3\Documents\LabVIEW Data\Logged Data.tdms</Val>
+<Val>E:\Documents\LabVIEW Data\Logged Data.tdms</Val>
 </Path>
 <Refnum>
 <Name>TDMS File Reference</Name>

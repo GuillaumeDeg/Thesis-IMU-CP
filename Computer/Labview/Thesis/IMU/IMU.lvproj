@@ -52,6 +52,7 @@
 		<Item Name="IMU Main.vi" Type="VI" URL="../IMU Main.vi"/>
 		<Item Name="temp.vi" Type="VI" URL="../Display/temp.vi"/>
 		<Item Name="build sequence.vi" Type="VI" URL="../Processing/build sequence.vi"/>
+		<Item Name="baudrates.ctl" Type="VI" URL="../Settings/baudrates.ctl"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Write to XML File(array).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/xml.llb/Write to XML File(array).vi"/>
@@ -145,6 +146,7 @@
 				<Item Name="Open File+.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Open File+.vi"/>
 				<Item Name="Read Characters From File.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Read Characters From File.vi"/>
 				<Item Name="Remove Duplicates From 1D Array.vim" Type="VI" URL="/&lt;vilib&gt;/Array/Remove Duplicates From 1D Array.vim"/>
+				<Item Name="NI_Gmath.lvlib" Type="Library" URL="/&lt;vilib&gt;/gmath/NI_Gmath.lvlib"/>
 			</Item>
 			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
 			<Item Name="IMU model SUBVI.vi" Type="VI" URL="../Display/IMU model SUBVI.vi"/>
