@@ -9,6 +9,7 @@
 
 </Property>
 	<Item Name="support" Type="Folder">
+		<Item Name="baudrates.ctl" Type="VI" URL="../baudrates.ctl"/>
 		<Item Name="Settings.ctl" Type="VI" URL="../Settings.ctl"/>
 	</Item>
 	<Item Name="Settings Dialog.vi" Type="VI" URL="../Settings Dialog.vi"/>

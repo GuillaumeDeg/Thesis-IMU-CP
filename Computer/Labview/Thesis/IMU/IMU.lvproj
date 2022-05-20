@@ -50,9 +50,6 @@
 		<Item Name="IMU Settings.lvlib" Type="Library" URL="../Settings/IMU Settings.lvlib"/>
 		<Item Name="IMU Display.lvlib" Type="Library" URL="../Display/IMU Display.lvlib"/>
 		<Item Name="IMU Main.vi" Type="VI" URL="../IMU Main.vi"/>
-		<Item Name="temp.vi" Type="VI" URL="../Display/temp.vi"/>
-		<Item Name="build sequence.vi" Type="VI" URL="../Processing/build sequence.vi"/>
-		<Item Name="baudrates.ctl" Type="VI" URL="../Settings/baudrates.ctl"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Write to XML File(array).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/xml.llb/Write to XML File(array).vi"/>
@@ -149,7 +146,6 @@
 				<Item Name="NI_Gmath.lvlib" Type="Library" URL="/&lt;vilib&gt;/gmath/NI_Gmath.lvlib"/>
 			</Item>
 			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
-			<Item Name="IMU model SUBVI.vi" Type="VI" URL="../Display/IMU model SUBVI.vi"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build">
 			<Item Name="Continuous Measurement and Logging Application" Type="EXE">

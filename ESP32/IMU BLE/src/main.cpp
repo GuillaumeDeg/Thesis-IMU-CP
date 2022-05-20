@@ -229,7 +229,7 @@ void printStructed(ICM_20948_I2C *sensor)
   // if (0 > (num = asprintf(&string, "%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f", i++, sensor->accX(), sensor->accY(), sensor->accZ(), sensor->gyrX(), sensor->gyrY(), sensor->gyrZ(), sensor->magX(), sensor->magY(), sensor->magZ())))
   //   return;
   // SerialBT.println(string);
-  SerialBT.printf("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\r\n", sensor->accX(), sensor->accY(), sensor->accZ(), sensor->gyrX(), sensor->gyrY(), sensor->gyrZ(), sensor->magX(), sensor->magY(), sensor->magZ());
+  SerialBT.printf("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\r\n", -sensor->accX(), sensor->accY(), sensor->accZ(), sensor->gyrX(), sensor->gyrY(), sensor->gyrZ(), sensor->magX(), sensor->magY(), sensor->magZ());
   // if (0 > (num = asprintf(&string, "%d", i)))
   //   return;
   // SERIAL_PORT.println(string);
