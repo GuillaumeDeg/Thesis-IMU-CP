@@ -50,6 +50,8 @@
 		<Item Name="IMU Settings.lvlib" Type="Library" URL="../Settings/IMU Settings.lvlib"/>
 		<Item Name="IMU Display.lvlib" Type="Library" URL="../Display/IMU Display.lvlib"/>
 		<Item Name="IMU Main.vi" Type="VI" URL="../IMU Main.vi"/>
+		<Item Name="Initial Orientation.vi" Type="VI" URL="../Processing/Initial Orientation.vi"/>
+		<Item Name="Error Modeling state.ctl" Type="VI" URL="../Processing/Error Modeling state.ctl"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Write to XML File(array).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/xml.llb/Write to XML File(array).vi"/>
@@ -135,7 +137,6 @@
 				<Item Name="NI_Matrix.lvlib" Type="Library" URL="/&lt;vilib&gt;/Analysis/Matrix/NI_Matrix.lvlib"/>
 				<Item Name="NI_3D Picture Control.lvlib" Type="Library" URL="/&lt;vilib&gt;/picture/3D Picture Control/NI_3D Picture Control.lvlib"/>
 				<Item Name="LVSceneTextAlignment.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/miscctls.llb/LVSceneTextAlignment.ctl"/>
-				<Item Name="Real Matrix NI_Silver.ctl" Type="VI" URL="/&lt;vilib&gt;/silver_ctls/ArrayMatrixCluster/Real Matrix NI_Silver.ctl"/>
 				<Item Name="Find First Error.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Find First Error.vi"/>
 				<Item Name="Close File+.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Close File+.vi"/>
 				<Item Name="compatReadText.vi" Type="VI" URL="/&lt;vilib&gt;/_oldvers/_oldvers.llb/compatReadText.vi"/>

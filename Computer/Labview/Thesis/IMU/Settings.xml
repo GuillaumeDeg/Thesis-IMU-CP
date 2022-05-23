@@ -10,7 +10,7 @@
 <Refnum>
 <Name>Port</Name>
 <RefKind>VISA</RefKind>
-<Val>COM7</Val>
+<Val>COM5</Val>
 </Refnum>
 <U16>
 <Name>Baudrate</Name>
