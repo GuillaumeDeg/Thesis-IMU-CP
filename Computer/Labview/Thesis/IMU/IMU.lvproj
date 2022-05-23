@@ -52,6 +52,14 @@
 		<Item Name="IMU Main.vi" Type="VI" URL="../IMU Main.vi"/>
 		<Item Name="Initial Orientation.vi" Type="VI" URL="../Processing/Initial Orientation.vi"/>
 		<Item Name="Error Modeling state.ctl" Type="VI" URL="../Processing/Error Modeling state.ctl"/>
+		<Item Name="Mode state.ctl" Type="VI" URL="../Processing/Mode state.ctl"/>
+		<Item Name="Error Modelling state.ctl" Type="VI" URL="../Processing/Error Modelling state.ctl"/>
+		<Item Name="Calibration configuration.ctl" Type="VI" URL="../Processing/Calibration configuration.ctl"/>
+		<Item Name="Error Model.ctl" Type="VI" URL="../Processing/Error Model.ctl"/>
+		<Item Name="Gyroscope Calibration state.ctl" Type="VI" URL="../Processing/Gyroscope Calibration state.ctl"/>
+		<Item Name="data.ctl" Type="VI" URL="../Processing/data.ctl"/>
+		<Item Name="Gyroscope calibration.ctl" Type="VI" URL="../Processing/Gyroscope calibration.ctl"/>
+		<Item Name="Accerelometer calibration.ctl" Type="VI" URL="../Processing/Accerelometer calibration.ctl"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Write to XML File(array).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/xml.llb/Write to XML File(array).vi"/>
