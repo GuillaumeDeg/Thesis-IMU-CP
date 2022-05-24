@@ -10,94 +10,65 @@
 
 #define SERIAL_PORT Serial
 #define WIRE_PORT Wire
-#define AD0_VAL 1
+#define AD0_VALA 1
+#define AD0_VALB 0
 #define CLOCK 80
 int i = 1;
 
-ICM_20948_I2C myICM;
+ICM_20948_I2C myICMA;
+ICM_20948_I2C myICMB;
 BluetoothSerial SerialBT;
 
 void printStructed(ICM_20948_I2C *sensor);
+void printStructedId(ICM_20948_I2C *sensor);
 void IRAM_ATTR onTimer();
-volatile bool interruptflag = false;
-// void loop() {
-//   if (Serial.available())
-//   {
-//     SerialBT.write(Serial.read());
-//   }
-//   if (SerialBT.available())
-//   {
-//     Serial.write(SerialBT.read());
-//   }
-// }
+volatile bool interruptflagA = false;
+volatile bool interruptflagB = false;
+void initialize(ICM_20948_I2C* sensor, u_int8_t AD0);
 
-void setup()
-{
-  setCpuFrequencyMhz(CLOCK);
-  pinMode(25, OUTPUT);
-  digitalWrite(25, HIGH);
-  SerialBT.begin("IMU");
-  // SERIAL_PORT.println("Bluetooth Started! Ready to pair...");
-  SERIAL_PORT.begin(115200);
-  while (!SERIAL_PORT){};
-  int Freq = getCpuFrequencyMhz();
-  Serial.print("CPU Freq = ");
-  Serial.print(Freq);
-  Serial.println(" MHz");
-  Freq = getXtalFrequencyMhz();
-  Serial.print("XTAL Freq = ");
-  Serial.print(Freq);
-  Serial.println(" MHz");
-  Freq = getApbFrequency();
-  Serial.print("APB Freq = ");
-  Serial.print(Freq);
-  Serial.println(" Hz");
-  WIRE_PORT.begin();
-  WIRE_PORT.setClock(400000);
-
-  // myICM.enableDebugging()
-
+void initialize(ICM_20948_I2C* sensor, u_int8_t AD0){
+  
   bool initialized = false;
   while (!initialized)
   {
-    myICM.begin(WIRE_PORT, AD0_VAL);
+    (*sensor).begin(WIRE_PORT, AD0);
 
-    // SERIAL_PORT.print(F("Initialization of the sensor returned: "));
-    // SERIAL_PORT.println(myICM.statusString());
+    SERIAL_PORT.print(F("Initialization of the sensor returned: "));
+    SERIAL_PORT.println((*sensor).statusString());
 
-    if (myICM.status != ICM_20948_Stat_Ok)
+    if ((*sensor).status != ICM_20948_Stat_Ok)
     {
-      // SERIAL_PORT.println("Trying again...");
+      SERIAL_PORT.println("Trying again...");
       delay(500);
     }
     else
     {
       initialized = true;
-      // SERIAL_PORT.println("Device connected!");
+      SERIAL_PORT.println("Device connected!");
     }
   }
 
   // Here we are doing a SW reset to make sure the device starts in a known state
-  myICM.swReset();
-  if (myICM.status != ICM_20948_Stat_Ok)
+  (*sensor).swReset();
+  if ((*sensor).status != ICM_20948_Stat_Ok)
   {
-    // SERIAL_PORT.print(F("Software Reset returned: "));
-    // SERIAL_PORT.println(myICM.statusString());
+    SERIAL_PORT.print(F("Software Reset returned: "));
+    SERIAL_PORT.println((*sensor).statusString());
   }
   delay(250);
 
   // Now wake the sensor up
-  myICM.sleep(false);
-  myICM.lowPower(false);
+  (*sensor).sleep(false);
+  (*sensor).lowPower(false);
 
   // Set Gyro and Accelerometer to a particular sample mode
   // options: ICM_20948_Sample_Mode_Continuous
   //          ICM_20948_Sample_Mode_Cycled
-  myICM.setSampleMode((ICM_20948_Internal_Acc | ICM_20948_Internal_Gyr), ICM_20948_Sample_Mode_Continuous);
-  if (myICM.status != ICM_20948_Stat_Ok)
+  (*sensor).setSampleMode((ICM_20948_Internal_Acc | ICM_20948_Internal_Gyr), ICM_20948_Sample_Mode_Continuous);
+  if ((*sensor).status != ICM_20948_Stat_Ok)
   {
-    // SERIAL_PORT.print(F("setSampleMode returned: "));
-    // SERIAL_PORT.println(myICM.statusString());
+    SERIAL_PORT.print(F("setSampleMode returned: "));
+    SERIAL_PORT.println((*sensor).statusString());
   }
 
   // Set full scale ranges for both acc and gyr
@@ -115,11 +86,11 @@ void setup()
                     // dps1000
                     // dps2000
 
-  myICM.setFullScale((ICM_20948_Internal_Acc | ICM_20948_Internal_Gyr), myFSS);
-  if (myICM.status != ICM_20948_Stat_Ok)
+  (*sensor).setFullScale((ICM_20948_Internal_Acc | ICM_20948_Internal_Gyr), myFSS);
+  if ((*sensor).status != ICM_20948_Stat_Ok)
   {
-    // SERIAL_PORT.print(F("setFullScale returned: "));
-    // SERIAL_PORT.println(myICM.statusString());
+    SERIAL_PORT.print(F("setFullScale returned: "));
+    SERIAL_PORT.println((*sensor).statusString());
   }
 
   // Set up Digital Low-Pass Filter configuration
@@ -143,36 +114,69 @@ void setup()
                                 // gyr_d5bw7_n8bw9
                                 // gyr_d361bw4_n376bw5
 
-  // myICM.setDLPFcfg((ICM_20948_Internal_Acc | ICM_20948_Internal_Gyr), myDLPcfg);
-  if (myICM.status != ICM_20948_Stat_Ok)
+  // myICMA.setDLPFcfg((ICM_20948_Internal_Acc | ICM_20948_Internal_Gyr), myDLPcfg);
+  if ((*sensor).status != ICM_20948_Stat_Ok)
   {
-    // SERIAL_PORT.print(F("setDLPcfg returned: "));
-    // SERIAL_PORT.println(myICM.statusString());
+    SERIAL_PORT.print(F("setDLPcfg returned: "));
+    SERIAL_PORT.println((*sensor).statusString());
   }
 
   // Choose whether or not to use DLPF
   // Here we're also showing another way to access the status values, and that it is OK to supply individual sensor masks to these functions
-  // ICM_20948_Status_e accDLPEnableStat = myICM.enableDLPF(ICM_20948_Internal_Acc, false);
-  // ICM_20948_Status_e gyrDLPEnableStat = myICM.enableDLPF(ICM_20948_Internal_Gyr, false);
-  // ICM_20948_Status_e DLPEnableStat = myICM.enableDLPF((ICM_20948_Internal_Acc | ICM_20948_Internal_Gyr), true);
+  // ICM_20948_Status_e accDLPEnableStat = myICMA.enableDLPF(ICM_20948_Internal_Acc, false);
+  // ICM_20948_Status_e gyrDLPEnableStat = myICMA.enableDLPF(ICM_20948_Internal_Gyr, false);
+  // ICM_20948_Status_e DLPEnableStat = myICMA.enableDLPF((ICM_20948_Internal_Acc | ICM_20948_Internal_Gyr), true);
   // SERIAL_PORT.print(F("Enable DLPF for Accelerometer returned: "));
-  // SERIAL_PORT.println(myICM.statusString(accDLPEnableStat));
+  // SERIAL_PORT.println(myICMA.statusString(accDLPEnableStat));
   // SERIAL_PORT.print(F("Enable DLPF for Gyroscope returned: "));
-  // SERIAL_PORT.println(myICM.statusString(gyrDLPEnableStat));
+  // SERIAL_PORT.println(myICMA.statusString(gyrDLPEnableStat));
   // SERIAL_PORT.print(F("Enable DLPF returned: "));
-  // SERIAL_PORT.println(myICM.statusString(DLPEnableStat));
+  // SERIAL_PORT.println(myICMA.statusString(DLPEnableStat));
 
   // Choose whether or not to start the magnetometer
-  myICM.startupMagnetometer();
-  if (myICM.status != ICM_20948_Stat_Ok)
+  (*sensor).startupMagnetometer();
+  if ((*sensor).status != ICM_20948_Stat_Ok)
   {
-    // SERIAL_PORT.print(F("startupMagnetometer returned: "));
-    // SERIAL_PORT.println(myICM.statusString());
+    SERIAL_PORT.print(F("startupMagnetometer returned: "));
+    SERIAL_PORT.println((*sensor).statusString());
   }
 
-  // SERIAL_PORT.println();
-  // SERIAL_PORT.println(F("Configuration complete!"));
+  SERIAL_PORT.println();
+  SERIAL_PORT.println(F("Configuration complete!"));
+}
 
+void setup()
+{
+  setCpuFrequencyMhz(CLOCK);
+
+  pinMode(19, OUTPUT);
+  digitalWrite(19, HIGH);
+
+  pinMode(17, OUTPUT);
+  digitalWrite(17, LOW);
+
+  SerialBT.begin("IMU");
+  SERIAL_PORT.println("Bluetooth Started! Ready to pair...");
+  SERIAL_PORT.begin(115200);
+  while (!SERIAL_PORT){};
+  int Freq = getCpuFrequencyMhz();
+  Serial.print("CPU Freq = ");
+  Serial.print(Freq);
+  Serial.println(" MHz");
+  Freq = getXtalFrequencyMhz();
+  Serial.print("XTAL Freq = ");
+  Serial.print(Freq);
+  Serial.println(" MHz");
+  Freq = getApbFrequency();
+  Serial.print("APB Freq = ");
+  Serial.print(Freq);
+  Serial.println(" Hz");
+  WIRE_PORT.begin();
+  WIRE_PORT.setClock(400000);
+
+  initialize(&myICMA, AD0_VALA);
+  // initialize(&myICMB, AD0_VALB);
+  
   int freq = 100;
   int counter = 80000000 / (256 * freq);
   hw_timer_t *timer = timerBegin(0, 256, true);
@@ -183,58 +187,42 @@ void setup()
 
 void loop()
 {
-  if (!interruptflag)
-    return;
-  if (myICM.dataReady())
+  if (interruptflagA && myICMA.dataReady())
   {
-    interruptflag = false;
-    myICM.getAGMT();
-    printStructed(&myICM);
+    interruptflagA = false;
+    myICMA.getAGMT();
+    printStructed(&myICMA);
   }
-  else
-  {
-    // SERIAL_PORT.println("Waiting for data");
-  }
+
+  // if (interruptflagB && myICMB.dataReady())
+  // {
+  //   interruptflagB = false;
+  //   myICMB.getAGMT();
+  //   printStructed(&myICMB);
+  // }
 }
 
 void IRAM_ATTR onTimer()
 {
-  interruptflag = true;
+  interruptflagA = true;
+  interruptflagB = true;
 }
 
 // Below here are some helper functions to print the data nicely!
 
-void printStructed(ICM_20948_I2C *sensor)
+void printStructedId(ICM_20948_I2C *sensor)
 {
-  // SERIAL_PORT.print(sensor->accX());
-  // SERIAL_PORT.print("\t");
-  // SERIAL_PORT.print(sensor->accY());
-  // SERIAL_PORT.print("\t");
-  // SERIAL_PORT.print(sensor->accZ());
-  // SERIAL_PORT.print("\t");
-  // SERIAL_PORT.print(sensor->gyrX());
-  // SERIAL_PORT.print("\t");
-  // SERIAL_PORT.print(sensor->gyrY());
-  // SERIAL_PORT.print("\t");
-  // SERIAL_PORT.print(sensor->gyrZ());
-  // SERIAL_PORT.print("\t");
-  // SERIAL_PORT.print(sensor->magX());
-  // SERIAL_PORT.print("\t");
-  // SERIAL_PORT.print(sensor->magY());
-  // SERIAL_PORT.print("\t");
-  // SERIAL_PORT.print(sensor->magZ());
-  // SERIAL_PORT.println();
+  int id = (sensor == &myICMA) ? 0 : 1;
   char *string;
   int num;
-  // if (0 > (num = asprintf(&string, "%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f", i++, sensor->accX(), sensor->accY(), sensor->accZ(), sensor->gyrX(), sensor->gyrY(), sensor->gyrZ(), sensor->magX(), sensor->magY(), sensor->magZ())))
-  //   return;
-  // SerialBT.println(string);
+  SerialBT.printf("%d: %f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\r\n", id, -sensor->accX(), sensor->accY(), sensor->accZ(), sensor->gyrX(), sensor->gyrY(), sensor->gyrZ(), sensor->magX(), sensor->magY(), sensor->magZ());
+  free(string);
+}
+
+void printStructed(ICM_20948_I2C *sensor)
+{
+  char *string;
+  int num;
   SerialBT.printf("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\r\n", -sensor->accX(), sensor->accY(), sensor->accZ(), sensor->gyrX(), sensor->gyrY(), sensor->gyrZ(), sensor->magX(), sensor->magY(), sensor->magZ());
-  // if (0 > (num = asprintf(&string, "%d", i)))
-  //   return;
-  // SERIAL_PORT.println(string);
-  // if (0 > (num = asprintf(&string, "2 %d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f", i++, sensor->accX(), sensor->accY(), sensor->accZ(), sensor->gyrX(), sensor->gyrY(), sensor->gyrZ(), sensor->magX(), sensor->magY(), sensor->magZ())))
-  //   return;
-  // SerialBT.println(string);
   free(string);
 }
